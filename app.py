@@ -1,7 +1,8 @@
 import flask
 from flask import request
 from flask_cors import CORS
-
+import joblib
+model = joblib.load('salary_predict_model.ml')
 app = flask.Flask(__name__)
 
 CORS(app)
@@ -13,9 +14,19 @@ def home():
 
 
 # predict route
-@app.route("/predict", methods=["GET"])
+@app.route("/predict", methods=["post"])
 def predict():
-    return "<h1>Prediction route is working... </h1>"
+    json = request.json
+    arr = [json["age"],
+           json["gender"],
+           json["country"],
+           json["highest_deg"],
+           json["coding_exp"],
+           json["title"],
+           json["company_size"]]
+    predctions = model.predict([arr]).tolist()
+    return str(predctions[0])
+
 
 
 if __name__ == '__main__':
