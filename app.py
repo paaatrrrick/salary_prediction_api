@@ -25,7 +25,7 @@ def predict():
            json["title"],
            json["company_size"]]
     predctions = model.predict([arr]).tolist()
-    return str(predctions[0])
+    return {"predicted_salary" : round(str(predctions[0]),2)}
 
 
 
